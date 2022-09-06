@@ -15,4 +15,4 @@ Movies details(title, genre, runtime, rating, poster, etc) are fetched using an 
 
 
 
-![logo]()
+![logo](https://github.com/markagugo/movierecomendationsystem/blob/main/mrs.PNG)
