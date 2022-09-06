@@ -9,7 +9,7 @@ Movies details(title, genre, runtime, rating, poster, etc) are fetched using an 
 
 ## Demo
 
-[Click HERE To View App]()
+[Click HERE To View App](https://themoviereco.herokuapp.com/)
 
 
 
