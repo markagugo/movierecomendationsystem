@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def create_similarity():
-    data = pd.read_csv('final_data.csv')
+    data = pd.read_csv('sd.csv')
     # creating a count matrix
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(data['comb'])
@@ -17,11 +17,7 @@ def create_similarity():
 
 def rcmd(m):
     m = m.lower()
-    try:
-        data.head()
-        similarity.shape
-    except:
-        data, similarity = create_similarity()
+    data, similarity = create_similarity()
     if m not in data['movie_title'].unique():
         return('Sorry! try another movie name')
     else:
@@ -45,7 +41,7 @@ def convert_to_list(my_list):
 
 
 def get_suggestions():
-    data = pd.read_csv('final_data.csv')
+    data = pd.read_csv('sd.csv')
     return list(data['movie_title'].str.capitalize())
 
 
