@@ -86,7 +86,7 @@ def recommend():
     rec_posters = convert_to_list(rec_posters)
 
     
-    
+    suggestions = get_suggestions()
 
     movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_posters))}
 
