@@ -64,7 +64,8 @@ def similarity():
     if type(rc)==type('string'):
         return rc
     else:
-        continue
+        m_str=str(rc)
+        return m_str
 
 @app.route("/recommend",methods=["POST"])
 def recommend():
