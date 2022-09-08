@@ -1,5 +1,4 @@
 $(function() {
-  // Button will be disabled until we type anything inside the input field
   const source = document.getElementById('autoComplete');
   const inputHandler = function(e) {
     if(e.target.value==""){
@@ -59,7 +58,7 @@ function load_details(my_api_key,title){
   });
 }
 
-// passing the movie name to get the similar movies from python's flask
+
 function movie_recs(movie_title,movie_id,my_api_key){
   $.ajax({
     type:'POST',
@@ -89,7 +88,7 @@ function movie_recs(movie_title,movie_id,my_api_key){
   }); 
 }
 
-// get all the details of the movie using the movie id.
+
 function get_movie_details(movie_id,my_api_key,arr,movie_title) {
   $.ajax({
     type:'GET',
@@ -104,8 +103,7 @@ function get_movie_details(movie_id,my_api_key,arr,movie_title) {
   });
 }
 
-// passing all the details to python's flask for displaying and scraping the movie reviews using imdb id
-function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
+function show_details(movie_details,arr,movie_title,my_api_key){
   var imdb_id = movie_details.imdb_id;
   var poster = 'https://image.tmdb.org/t/p/original'+movie_details.poster_path;
   var overview = movie_details.overview;
@@ -128,19 +126,11 @@ function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
   }
   arr_poster = get_movie_posters(arr,my_api_key);
   
-  movie_cast = get_movie_cast(movie_id,my_api_key);
+
   
-  ind_cast = get_individual_cast(movie_cast,my_api_key);
   
   details = {
     'title':movie_title,
-      'cast_ids':JSON.stringify(movie_cast.cast_ids),
-      'cast_names':JSON.stringify(movie_cast.cast_names),
-      'cast_chars':JSON.stringify(movie_cast.cast_chars),
-      'cast_profiles':JSON.stringify(movie_cast.cast_profiles),
-      'cast_bdays':JSON.stringify(ind_cast.cast_bdays),
-      'cast_bios':JSON.stringify(ind_cast.cast_bios),
-      'cast_places':JSON.stringify(ind_cast.cast_places),
       'imdb_id':imdb_id,
       'poster':poster,
       'genres':my_genre,
@@ -170,60 +160,8 @@ function show_details(movie_details,arr,movie_title,my_api_key,movie_id){
   });
 }
 
-// get the details of individual cast
-function get_individual_cast(movie_cast,my_api_key) {
-    cast_bdays = [];
-    cast_bios = [];
-    cast_places = [];
-    for(var cast_id in movie_cast.cast_ids){
-      $.ajax({
-        type:'GET',
-        url:'https://api.themoviedb.org/3/person/'+movie_cast.cast_ids[cast_id]+'?api_key='+my_api_key,
-        async:false,
-        success: function(cast_details){
-          cast_bdays.push((new Date(cast_details.birthday)).toDateString().split(' ').slice(1).join(' '));
-          cast_bios.push(cast_details.biography);
-          cast_places.push(cast_details.place_of_birth);
-        }
-      });
-    }
-    return {cast_bdays:cast_bdays,cast_bios:cast_bios,cast_places:cast_places};
-  }
 
-// getting the details of the cast for the requested movie
-function get_movie_cast(movie_id,my_api_key){
-    cast_ids= [];
-    cast_names = [];
-    cast_chars = [];
-    cast_profiles = [];
 
-    top_10 = [0,1,2,3,4,5,6,7,8,9];
-    $.ajax({
-      type:'GET',
-      url:"https://api.themoviedb.org/3/movie/"+movie_id+"/credits?api_key="+my_api_key,
-      async:false,
-      success: function(my_movie){
-        if(my_movie.cast.length>=10){
-          top_cast = [0,1,2,3,4,5,6,7,8,9];
-        }
-        else {
-          top_cast = [0,1,2,3,4];
-        }
-        for(var my_cast in top_cast){
-          cast_ids.push(my_movie.cast[my_cast].id)
-          cast_names.push(my_movie.cast[my_cast].name);
-          cast_chars.push(my_movie.cast[my_cast].character);
-          cast_profiles.push("https://image.tmdb.org/t/p/original"+my_movie.cast[my_cast].profile_path);
-        }
-      },
-      error: function(){
-        alert("Invalid Request!");
-        $("#loader").delay(500).fadeOut();
-      }
-    });
-
-    return {cast_ids:cast_ids,cast_names:cast_names,cast_chars:cast_chars,cast_profiles:cast_profiles};
-  }
 
 // getting posters for all the recommended movies
 function get_movie_posters(arr,my_api_key){
