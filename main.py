@@ -17,7 +17,11 @@ def create_similarity():
 
 def rcmd(m):
     m = m.lower()
-    data, similarity = create_similarity()
+    try:
+        data.head()
+        similarity.shape
+    except:
+        data, similarity = create_similarity()
     if m not in data['movie_title'].unique():
         return('Sorry! try another movie name')
     else:
